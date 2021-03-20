@@ -6,6 +6,15 @@
   <router-view />
 </template>
 
+<script>
+import "primevue/resources/themes/saga-blue/theme.css"; //theme
+import "primevue/resources/primevue.min.css"; //core css
+import "primeicons/primeicons.css"; //icons
+import "primeflex/primeflex.css";
+
+export default {};
+</script>
+
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
