@@ -9,7 +9,7 @@
           <div class="p-inputgroup">
             <span class="p-inputgroup-addon"> <i class="pi pi-user"></i> </span>
             <span class="p-float-label">
-              <InputText id="name" type="text" v-model="name" />
+              <InputText id="name" type="text" v-model="feedback.name" />
               <label for="name">Name</label>
             </span>
           </div>
@@ -24,7 +24,7 @@
               ><i class="pi pi-envelope"></i
             ></span>
             <span class="p-float-label">
-              <InputText id="email" type="email" v-model="email" />
+              <InputText id="email" type="email" v-model="feedback.email" />
               <label for="email">Email address</label>
             </span>
           </div>
@@ -34,12 +34,15 @@
         </div>
 
         <div class="p-field">
-          <Textarea v-model="text" rows="5" cols="30" placeholder="Text" />
+          <Textarea v-model="feedback.text" rows="5" placeholder="Text" />
+          <small v-show="validationErrors.text" class="p-error">{{
+            validationErrors.text
+          }}</small>
         </div>
 
         <div class="p-field">
           <Listbox
-            v-model="selectedApplications"
+            v-model="feedback.selectedApplications"
             :options="groupedApplications"
             optionLabel="label"
             optionGroupLabel="label"
@@ -61,12 +64,17 @@
               </div>
             </template>
           </Listbox>
+          <small
+            v-show="validationErrors.selectedApplications"
+            class="p-error"
+            >{{ validationErrors.selectedApplications }}</small
+          >
         </div>
       </div>
     </template>
     <template #footer>
       <div class="p-fluid">
-        <Button icon="pi pi-send" label="Send" />
+        <Button icon="pi pi-send" label="Send" @click="submitData()" />
       </div>
     </template>
   </Card>
@@ -78,6 +86,10 @@ import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
 import Listbox from "primevue/listbox";
+
+import joi from "joi";
+import { mapActions } from "vuex";
+
 export default {
   name: "InputGroup",
   components: {
@@ -89,10 +101,12 @@ export default {
   },
   data() {
     return {
-      name: "",
-      email: "",
-      text: "",
-      selectedApplications: [],
+      feedback: {
+        name: "",
+        email: "",
+        text: "",
+        selectedApplications: []
+      },
       validationErrors: {},
       groupedApplications: [
         {
@@ -121,6 +135,47 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    ...mapActions(["sumbitFeedback"]),
+    validateData: function(feedback) {
+      const schema = joi.object().keys({
+        name: joi
+          .string()
+          .min(3)
+          .max(45)
+          .required()
+          .pattern(/^([A-ZÕÄÖÜ][a-zõäöü]+)([ -][A-ZÕÄÖÜ][a-zõäöü]+)*$/),
+        email: joi
+          .string()
+          .email({ tlds: { allow: false } })
+          .required(),
+        text: joi
+          .string()
+          .max(255)
+          .required(),
+        selectedApplications: joi
+          .array()
+          .min(1)
+          .required()
+      });
+      return schema.validate(feedback, { abortEarly: false });
+    },
+    submitData: async function() {
+      try {
+        this.validationErrors = {};
+        const validationResult = this.validateData(this.feedback);
+        if (validationResult.error) {
+          validationResult.error.details.forEach(
+            err => (this.validationErrors[err.context.key] = err.message)
+          );
+          throw new Error("Validation error!");
+        }
+        await this.sumbitFeedback(this.participant);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 };
 </script>
