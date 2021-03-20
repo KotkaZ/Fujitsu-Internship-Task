@@ -15,9 +15,9 @@ export default {
   name: "Table",
   components: {
     Column,
-    DataTable,
+    DataTable
   },
-  props: ["feedbacks"],
+  props: ["feedbacks"]
 };
 </script>
 
