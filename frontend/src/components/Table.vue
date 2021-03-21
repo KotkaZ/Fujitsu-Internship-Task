@@ -1,10 +1,16 @@
 <template>
   <DataTable :value="feedbacks">
-    <Column field="id" header="#"></Column>
-    <Column field="name" header="Name"></Column>
-    <Column field="email" header="Email"></Column>
-    <Column field="category" header="Category"></Column>
-    <Column field="text" header="Text"></Column>
+    <Column field="id" header="#" />
+    <Column field="name" header="Name" />
+    <Column field="email" header="Email" />
+    <Column field="applications" header="Category">
+      <template #body="{data}">
+        <ul>
+          <li v-for="cat in data.applications" :key="cat">{{ cat }}</li>
+        </ul>
+      </template>
+    </Column>
+    <Column field="text" header="Text" />
   </DataTable>
 </template>
 

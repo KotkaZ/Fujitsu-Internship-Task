@@ -1,6 +1,6 @@
 <template>
-  <Table />
-  <InputGroup :feedbacks="getFeedbacks" />
+  <Table :feedbacks="getFeedbacks" />
+  <InputGroup />
 </template>
 
 <script>
@@ -15,13 +15,13 @@ export default {
     Table
   },
   computed: {
-    ...mapGetters("getFeedbacks")
+    ...mapGetters(["getFeedbacks"])
   },
   methods: {
-    ...mapActions("fetchFeedbacks")
+    ...mapActions(["fetchFeedbacks"])
   },
-  mounted() {
-    this.fetchFeedbacks();
+  async created() {
+    await this.fetchFeedbacks();
   }
 };
 </script>

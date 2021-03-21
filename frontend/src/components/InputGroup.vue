@@ -42,7 +42,7 @@
 
         <div class="p-field">
           <Listbox
-            v-model="feedback.selectedApplications"
+            v-model="selectedApplications"
             :options="groupedApplications"
             optionLabel="label"
             optionGroupLabel="label"
@@ -64,11 +64,9 @@
               </div>
             </template>
           </Listbox>
-          <small
-            v-show="validationErrors.selectedApplications"
-            class="p-error"
-            >{{ validationErrors.selectedApplications }}</small
-          >
+          <small v-show="validationErrors.applications" class="p-error">{{
+            validationErrors.applications
+          }}</small>
         </div>
       </div>
     </template>
@@ -105,9 +103,10 @@ export default {
         name: "",
         email: "",
         text: "",
-        selectedApplications: []
+        applications: []
       },
       validationErrors: {},
+      selectedApplications: [],
       groupedApplications: [
         {
           label: "Health",
@@ -154,7 +153,7 @@ export default {
           .string()
           .max(255)
           .required(),
-        selectedApplications: joi
+        applications: joi
           .array()
           .min(1)
           .required()
@@ -163,6 +162,9 @@ export default {
     },
     submitData: async function() {
       try {
+        this.selectedApplications.forEach(v =>
+          this.feedback.applications.push(v.value)
+        );
         this.validationErrors = {};
         const validationResult = this.validateData(this.feedback);
         if (validationResult.error) {
@@ -171,7 +173,12 @@ export default {
           );
           throw new Error("Validation error!");
         }
-        await this.sumbitFeedback(this.participant);
+
+        await this.sumbitFeedback(this.feedback);
+
+        for (const key in this.feedback) delete this.feedback[key];
+
+        this.selectedApplications = [];
       } catch (error) {
         console.error(error);
       }

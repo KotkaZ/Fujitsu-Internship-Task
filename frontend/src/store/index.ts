@@ -13,11 +13,11 @@ export default createStore({
   },
   actions: {
     async fetchFeedbacks({ commit }) {
-      const feedbacks = await axios.get("feedbacks");
-      commit("setFeedbacks", feedbacks);
+      const response = await axios.get("feedback");
+      commit("setFeedbacks", response.data);
     },
     async sumbitFeedback({ dispatch }, feedback) {
-      await axios.post("feedbacks", feedback);
+      await axios.post("feedback", feedback);
       dispatch("fetchFeedbacks");
     }
   },
