@@ -1,5 +1,6 @@
 package kotkaz.github.com.fujitsubackend.feedback;
 
+import kotkaz.github.com.fujitsubackend.feedback.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +31,13 @@ public class FeedbackService {
     /**
      * Method adds new feedback object to repository.
      * Overwriting feedback with same id is forbidden,
-     * in which case it will return status code 500 for simplicity.
+     * in which case it will return status code 400 for simplicity.
      *
      * @param feedback New Feedback object.
      */
     public void addNewFeedback(Feedback feedback) {
         if (feedback.getId() != null && feedbackRepository.existsById(feedback.getId()))
-            throw new IllegalStateException("Feedback with id " + feedback.getId() + " already exists!");
+            throw new BadRequestException("Feedback with id " + feedback.getId() + " already exists!");
         feedbackRepository.save(feedback);
     }
 }
