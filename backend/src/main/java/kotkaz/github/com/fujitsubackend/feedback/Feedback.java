@@ -9,6 +9,9 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
 
+/**
+ * Feedback model class.
+ */
 @Entity
 @Table
 @ToString
@@ -33,9 +36,9 @@ public class Feedback {
     @Setter
     @Getter
     @NotBlank
-    @Size.List ({
-            @Size(min=3, message="The name field must be at least {min} characters"),
-            @Size(max=45, message="The name field must be less than {max} characters")
+    @Size.List({
+            @Size(min = 3, message = "The name field must be at least {min} characters"),
+            @Size(max = 45, message = "The name field must be less than {max} characters")
     })
     @Pattern(regexp = "^([A-ZÕÄÖÜ][a-zõäöü]+)([ -][A-ZÕÄÖÜ][a-zõäöü]+)*$")
     private String name;
@@ -49,9 +52,9 @@ public class Feedback {
     @Setter
     @Getter
     @NotBlank
-    @Size.List ({
-            @Size(min=3, message="The text field must be at least {min} characters"),
-            @Size(max=255, message="The text field must be less than {max} characters")
+    @Size.List({
+            @Size(min = 3, message = "The text field must be at least {min} characters"),
+            @Size(max = 255, message = "The text field must be less than {max} characters")
     })
     private String text;
 
@@ -60,7 +63,6 @@ public class Feedback {
     @NotEmpty
     @ElementCollection
     private List<String> applications;
-
 
 
     public Feedback(String name, String email, String text, List<String> applications) {

@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Feedback API Layer
+ */
 @RestController
 @RequestMapping("api/v1/feedback")
 @CrossOrigin(origins = {"http://localhost:8081"})
@@ -20,12 +23,12 @@ public class FeedbackController {
     }
 
     @GetMapping
-    public List<Feedback> getFeedbacks(){
+    public List<Feedback> getFeedbacks() {
         return feedbackService.getFeedbacks();
     }
 
     @PostMapping
-    public void addFeedback(@RequestBody @NonNull @Valid Feedback feedback){
+    public void addFeedback(@RequestBody @NonNull @Valid Feedback feedback) {
         feedbackService.addNewFeedback(feedback);
     }
 
