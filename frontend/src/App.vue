@@ -3,7 +3,12 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </div>
-  <router-view />
+
+  <div class="p-grid p-jc-center">
+    <div class="p-col-12 p-md-6">
+      <router-view />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -16,6 +21,15 @@ export default {};
 </script>
 
 <style lang="scss">
+body {
+  background: linear-gradient(
+    149deg,
+    rgba(108, 189, 231, 1) 18%,
+    rgba(23, 128, 8, 1) 100%,
+    rgba(31, 30, 27, 1) 100%
+  );
+  min-height: 100vh;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

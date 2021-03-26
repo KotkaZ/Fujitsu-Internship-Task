@@ -1,5 +1,5 @@
 <template>
-  <Card>
+  <Card class="p-shadow-14">
     <template #title>
       Please give us feedback
     </template>
@@ -162,6 +162,8 @@ export default {
     },
     submitData: async function() {
       try {
+        this.feedback.applications = [];
+
         this.selectedApplications.forEach(v =>
           this.feedback.applications.push(v.value)
         );

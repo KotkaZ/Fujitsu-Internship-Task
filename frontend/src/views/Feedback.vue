@@ -1,6 +1,6 @@
 <template>
   <Table :feedbacks="getFeedbacks" />
-  <InputGroup />
+  <InputGroup class="p-mt-3" />
 </template>
 
 <script>
