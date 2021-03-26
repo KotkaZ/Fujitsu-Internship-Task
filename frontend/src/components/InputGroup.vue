@@ -129,34 +129,49 @@ export default {
           code: "Docs",
           items: [
             { label: "OpenKM", value: "OpenKM" },
-            { label: "Microsoft SharePoint", value: "Los Microsoft SharePoint" }
+            { label: "Microsoft SharePoint", value: "Microsoft SharePoint" }
           ]
         }
-      ]
+      ],
+      errorMessages: {
+        "string.empty": `This field is required!`,
+        "string.min": `Entered information must be at least {#limit} characters!!`,
+        "string.max": `Entered information must be less than {#limit} characters!!`,
+        "string.email": "This is not a valid email!",
+        "string.pattern.base": "This field is not valid!",
+        "any.required": `This field is required!`
+      }
     };
   },
   methods: {
     ...mapActions(["sumbitFeedback"]),
     validateData: function(feedback) {
+      const charSet = "A-Za-zÕõÄäÖöÜüŠšŽž";
+      const nameRegex = new RegExp(`^[${charSet}]+([ .,-][${charSet}]+)*$`);
+
       const schema = joi.object().keys({
         name: joi
           .string()
           .min(3)
           .max(45)
           .required()
-          .pattern(/^([A-ZÕÄÖÜ][a-zõäöü]+)([ -][A-ZÕÄÖÜ][a-zõäöü]+)*$/),
+          .pattern(nameRegex)
+          .messages(this.errorMessages),
         email: joi
           .string()
           .email({ tlds: { allow: false } })
-          .required(),
+          .required()
+          .messages(this.errorMessages),
         text: joi
           .string()
           .max(255)
-          .required(),
+          .required()
+          .messages(this.errorMessages),
         applications: joi
           .array()
           .min(1)
           .required()
+          .messages(this.errorMessages)
       });
       return schema.validate(feedback, { abortEarly: false });
     },
