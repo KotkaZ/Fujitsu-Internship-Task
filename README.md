@@ -40,7 +40,8 @@ docker-compose up
 
 This will take a couple of minutes on the initial start because Docker has to build images.
 Once up, servers can be accessed on previously defined ports. 
-You can change port mappings in `docker-compose.yml`
+You can change port mappings in `docker-compose.yml`.
+
 ---
 
 ## Development
