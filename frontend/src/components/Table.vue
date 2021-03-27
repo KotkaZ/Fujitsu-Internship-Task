@@ -29,7 +29,7 @@ export default {
     Card,
     DataTable
   },
-  props: ["feedbacks"]
+  props: { feedbacks: Array }
 };
 </script>
 
